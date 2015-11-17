@@ -2,7 +2,10 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var passport = require('passport');
+
 var User = mongoose.model('User');
+
+var auth = require('../../util/auth');
 
 /**********************************************
 /************Authentication********************
@@ -35,6 +38,7 @@ router.post('/login', function (req, res, next) {
         }
 
         if (user) {
+            user.refreshLocation(req);
             return res.json({token: user.generateJWT()});
         } else {
             return res.status(401).json(info);
@@ -61,7 +65,9 @@ router.post('/register', function (req, res, next) {
     }
     var user = new User();
     user.username = req.body.username;
-    user.setPassword(req.body.password)
+    user.setPassword(req.body.password);
+    user.refreshLocation(req);
+        
 
     user.save(function (err) {
         if (err) {
@@ -76,7 +82,9 @@ router.post('/register', function (req, res, next) {
 /*********************************************/
 
 
-
+router.get('/', auth, function (req, res, next) {
+    res.json(req.payload);
+});
 
 
 
