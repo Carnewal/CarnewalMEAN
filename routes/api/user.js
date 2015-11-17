@@ -7,6 +7,10 @@ var User = mongoose.model('User');
 
 var auth = require('../../util/auth');
 
+
+
+
+ 
 /**********************************************
 /************Authentication********************
 /*********************************************/
@@ -27,7 +31,7 @@ var auth = require('../../util/auth');
  *      ..
  *     ]
  */
-router.post('/login', function (req, res, next) {
+/*router.post('/login', function (req, res, next) {
     if (!req.body.username || !req.body.password) {
         return res.status(400).json({message: 'Please fill out all fields'});
     }
@@ -44,7 +48,12 @@ router.post('/login', function (req, res, next) {
             return res.status(401).json(info);
         }
     })(req, res, next);
+});*/
+
+router.post('/login', passport.authenticate('local'), function(req, res) {
+  return res.json({token: req.user.generateJWT()});
 });
+
 /**
  * @api {post} /api/user/register Register
  * @apiName RegisterUser
@@ -83,7 +92,7 @@ router.post('/register', function (req, res, next) {
 
 
 router.get('/', auth, function (req, res, next) {
-    res.json(req.payload);
+    res.json(req.user);
 });
 
 
