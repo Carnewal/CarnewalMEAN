@@ -9,7 +9,7 @@ router.param('product', function(req, res, next, id) {
 
   query.exec(function (err, product){
     if (err) { return next(err); }
-    if (!product) { return next(new Error('can\'t find product')); }
+    if (!product) { return next(new Error('Can\'t find product')); }
 
     req.product = product;
     return next();
@@ -26,6 +26,5 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.get('/:id/add')
 
 module.exports = router;

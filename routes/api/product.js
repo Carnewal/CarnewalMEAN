@@ -144,4 +144,6 @@ router.delete('/:id', function (req, res, next) {
     req.product.remove();
     res.json("removed.")
 });
+
+
 module.exports = router;

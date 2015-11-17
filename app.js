@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var passport = require('passport');
 var app = express();
 
 
@@ -29,11 +29,13 @@ require('./models/Product');
 require('./models/User');
 require('./models/Wishlist');
 
+require('./config/passport');
+
 
 
 var epProduct = require('./routes/api/product');
-//var epUser = require('./routes/api/user');
-//var epWishlist = require('./routes/api/wishlist');
+var epUser = require('./routes/api/user');
+var epWishlist = require('./routes/api/wishlist');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -50,12 +52,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(passport.initialize());
+
 app.use('/', routes);
 app.use('/users', users);
 
 app.use('/api/product', epProduct);
-//app.use('/api/user', epUser);
-//app.use('/api/wishlist', epWishlist);
+app.use('/api/user', epUser);
+app.use('/api/wishlist', epWishlist);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
