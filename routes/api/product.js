@@ -3,6 +3,8 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Product = mongoose.model('Product');
 
+var auth = require('../../util/auth');
+
 /**
  * @param {type} parameter
  * @param {type} callback
@@ -26,7 +28,7 @@ router.param('id', function (req, res, next, id) {
 });
 
 /**
- * @api {post} /api/product/ Product List
+ * @api {post} /api/product/ List
  * @apiName ListProducts
  * @apiGroup Product
  * @apiDescription Toont een lijst van alle producten
@@ -50,7 +52,7 @@ router.get('/', function (req, res, next) {
     });
 });
 /**
- * @api {post} /api/product/:id Product Create
+ * @api {post} /api/product/:id Create
  * @apiName CreateProduct
  * @apiGroup Product
  * @apiDescription Creeert een product
@@ -76,7 +78,7 @@ router.post('/', function (req, res, next) {
 });
 
 /**
- * @api {post} /api/product/:id Product Update
+ * @api {post} /api/product/:id Update
  * @apiName UpdateProduct
  * @apiGroup Product
  * @apiDescription Update een product
@@ -101,7 +103,7 @@ router.post('/:id', function (req, res, next) {
 });
 
 /**
- * @api {get} /api/product/:id Product Read
+ * @api {get} /api/product/:id Read
  * @apiName ReadProduct
  * @apiGroup Product
  * @apiDescription Leest een product op :id
@@ -126,7 +128,7 @@ router.get('/:id', function (req, res, next) {
      });*/
 });
 /**
- * @api {delete} /api/product/:id Product Delete
+ * @api {delete} /api/product/:id Delete
  * @apiName DeleteProduct
  * @apiGroup Product
  * @apiDescription Verwijdert een product
@@ -142,7 +144,7 @@ router.get('/:id', function (req, res, next) {
  */
 router.delete('/:id', function (req, res, next) {
     req.product.remove();
-    res.json("removed.")
+    res.json("removed")
 });
 
 
