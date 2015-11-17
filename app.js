@@ -12,7 +12,8 @@ var mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost/carnewal', function(err,db){
     if (!err){
-        console.log('Connected to /carnewal!');
+        console.log('Connected to /carnewal! Dropping...');
+        mongoose.connection.db.dropDatabase();
     } else{
         console.dir(err); //failed to connect
     }
@@ -22,10 +23,17 @@ mongoose.connect('mongodb://localhost/carnewal', function(err,db){
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+
+
 require('./models/Product');
 require('./models/User');
 require('./models/Wishlist');
 
+
+
+var epProduct = require('./routes/api/product');
+//var epUser = require('./routes/api/user');
+//var epWishlist = require('./routes/api/wishlist');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,7 +52,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/api', users);
+
+app.use('/api/product', epProduct);
+//app.use('/api/user', epUser);
+//app.use('/api/wishlist', epWishlist);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
