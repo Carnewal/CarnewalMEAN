@@ -26,9 +26,9 @@ var users = require('./routes/users');
 
 
 
+require('./models/Wishlist');
 require('./models/Product');
 require('./models/User');
-require('./models/Wishlist');
 
 require('./config/passport');
 
@@ -37,7 +37,7 @@ require('./config/passport');
 var epProduct = require('./routes/api/product');
 var epUser = require('./routes/api/user');
 var epWishlist = require('./routes/api/wishlist');
-
+ 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

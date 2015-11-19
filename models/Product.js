@@ -5,16 +5,16 @@ var ProductSchema = new mongoose.Schema({
     //ontstaan met relaties wanneer cid moet veranderen.
     cid: {
         type: String,
-        required: true, 
-        unique: true,  
+        required: true,
+        unique: true,
         index: true
     },
     name: {
-        type: String, 
+        type: String,
         required: true
     },
     img: {
-        type: String,
+        type: String
     },
     description: {
         type: String
@@ -29,6 +29,11 @@ var ProductSchema = new mongoose.Schema({
     related: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product'
+        }
+    ],
+    likes: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
         }
     ]
 });

@@ -3,55 +3,71 @@ var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 var geoip = require('geoip-lite');
 
+var Wishlist = mongoose.model('Wishlist');
 
 var UserSchema = new mongoose.Schema({
-    username: {
+    username: { 
         type: String,
         lowercase: true,
         unique: true
     },
+    hash: String,
+    salt: String,
+    
+    email: String,
+    
+    
+    
     rights: {
         type: Number,
         default: 0
     },
-    hash: String,
-    salt: String,
     
     // Geolocation
     locationUpdate: Date,
     ip: String,
     country: String,
-    region: String, 
+    region: String,
     city: String,
     latitude: Number,
-    longitude: Number
+    longitude: Number,
     
+    //Wishlist
+    wishlist: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Wishlist'
+    },
+    
+    //likes
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+    }]
+
 });
 
 
 UserSchema.methods.refreshLocation = function (req) {
-    
+
     this.ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    if(this.ip === "::1") {
+    if (this.ip === "::1") {
         this.ip = "78.22.100.25";
     }
-    var geo = geoip.lookup(this.ip);     
+    var geo = geoip.lookup(this.ip);
     this.locationUpdate = new Date();
     this.country = geo.country;
     this.region = geo.region;
     this.city = geo.city;
     this.latitude = geo.ll[0];
     this.longitude = geo.ll[1];
-    
-    
+
+
 };
 
 
-/**
- * 
- * @param {type} password
- * @returns {undefined}
- */
+UserSchema.methods.setup = function() {
+    var wl = new Wishlist();
+};
 
 UserSchema.methods.setPassword = function (password) {
     this.salt = crypto.randomBytes(16).toString('hex');
@@ -73,7 +89,5 @@ UserSchema.methods.generateJWT = function () {
         exp: parseInt(exp.getTime() / 1000),
     }, 'SECRET');
 };
-
-
 
 mongoose.model('User', UserSchema);

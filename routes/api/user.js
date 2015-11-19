@@ -3,10 +3,11 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var passport = require('passport');
 
+var Wishlist = mongoose.model('Wishlist');
+var Product = mongoose.model('Product');
 var User = mongoose.model('User');
 
 var auth = require('../../util/auth');
-
 
 
 
@@ -72,11 +73,17 @@ router.post('/register', function (req, res, next) {
     if (!req.body.username || !req.body.password) {
         return res.status(400).json({message: 'Please fill out all fields'});
     }
-    var user = new User();
+    var user = new User(); 
+    
+    var wl = new Wishlist();
+    wl.save();
+    
     user.username = req.body.username;
     user.setPassword(req.body.password);
     user.refreshLocation(req);
-        
+    
+    user.wishlist = wl;
+         
 
     user.save(function (err) {
         if (err) {
@@ -92,6 +99,14 @@ router.post('/register', function (req, res, next) {
 
 
 router.get('/', auth, function (req, res, next) {
+    /*
+    var user = req.user.toObject();
+    delete user._id;
+    delete user.wishlist;
+    delete user.hash;
+    delete user.salt;
+    delete user.__v;
+    */
     res.json(req.user);
 });
 

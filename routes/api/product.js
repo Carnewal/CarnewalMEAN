@@ -1,7 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+var passport = require('passport');
+
+var Wishlist = mongoose.model('Wishlist');
 var Product = mongoose.model('Product');
+var User = mongoose.model('User');
 
 var auth = require('../../util/auth');
 
@@ -12,7 +16,7 @@ var auth = require('../../util/auth');
 router.param('id', function (req, res, next, id) {
     delete req.product;
     console.log("Param id: " + id);
-    
+
     var query = Product.findOne({cid: id});
     query.exec(function (err, product) {
         if (err) {
@@ -28,7 +32,7 @@ router.param('id', function (req, res, next, id) {
 });
 
 /**
- * @api {post} /api/product/ List
+ * @api {get} /api/product/ List
  * @apiName ListProducts
  * @apiGroup Product
  * @apiDescription Toont een lijst van alle producten
@@ -51,6 +55,7 @@ router.get('/', function (req, res, next) {
         res.json(products);
     });
 });
+
 /**
  * @api {post} /api/product/:id Create
  * @apiName CreateProduct
@@ -97,16 +102,16 @@ router.post('/:id', function (req, res, next) {
     }
     Product.findOneAndUpdate({cid: req.product.cid}, req.body, {upsert: true, new : false}, function (err, updatedProduct) {
         if (err)
-            return next(err + " ---- " + updatedProduct); 
+            return next(err + " ---- " + updatedProduct);
         res.json(updatedProduct);
     });
 });
 
 /**
- * @api {get} /api/product/:id Read
- * @apiName ReadProduct
+ * @api {get} /api/product/:id Get
+ * @apiName GetProduct
  * @apiGroup Product
- * @apiDescription Leest een product op :id
+ * @apiDescription Return een product op :id
  *
  *
  * @apiSuccessExample Success-Response:
@@ -143,9 +148,58 @@ router.get('/:id', function (req, res, next) {
  *
  */
 router.delete('/:id', function (req, res, next) {
-    req.product.remove();
-    res.json("removed")
+    Product.remove({cid: req.product.cid}, function (err) {
+        if (err) {
+            res.json("Could not remove.")
+        }
+        res.json("Removed " + req.product.cid)
+    });
 });
+
+
+
+/**
+ * @api {post} /api/product/:id/like liking:Like
+ * @apiName LikeProduct
+ * @apiGroup Product
+ * @apiDescription Liket een product
+ *
+ * @apiHeader {String} authorization Authorization header-value. Should be in format "Bearer [TOKEN]".
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *         message: 'Product deleted'
+ *     }
+ *
+ */
+router.post('/:id/like', passport.authenticate('local'), function (req, res, next) {
+
+    res.json("todo");
+
+});
+
+
+/**
+ * @api {post} /api/product/:id/unlike liking:Unlike
+ * @apiName UnlikeProduct
+ * @apiGroup Product
+ * @apiDescription Liket een product
+ *
+ * @apiHeader {String} authorization Authorization header-value. Should be in format "Bearer [TOKEN]".
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *         message: 'Product deleted'
+ *     }
+ *
+ */
+router.post('/:id/unlike', passport.authenticate('local'), function (req, res, next) {
+
+    res.json("todo");
+});
+
 
 
 module.exports = router;
