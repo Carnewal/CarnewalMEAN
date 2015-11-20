@@ -1,4 +1,5 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    relationship = require("mongoose-relationship");;
 
 var WishlistEntrySchema = new mongoose.Schema({
     // the amount of products the user wishes
@@ -22,7 +23,11 @@ var WishlistSchema = new mongoose.Schema({
     // a message the user left on his wishlist
     message: String,
     // the array of wishlist product entries
-    entries: [WishlistEntrySchema]
+    entries: [WishlistEntrySchema],
+    //the User
+    owner: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+    
+    
 });
 
 
@@ -34,7 +39,7 @@ var WishlistSchema = new mongoose.Schema({
  * @param {type} callback
  * @returns {undefined}
  */
-WishlistSchema.methods.append = function (product, amount, callback) {
+WishlistSchema.methods.upsert = function (product, amount, callback) {
     var index = -1;
     
     if (typeof this.entries != "undefined" && this.entries != null 

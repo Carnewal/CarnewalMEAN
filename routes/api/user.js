@@ -76,6 +76,7 @@ router.post('/register', function (req, res, next) {
     var user = new User(); 
     
     var wl = new Wishlist();
+    wl.user = user;
     wl.save();
     
     user.username = req.body.username;

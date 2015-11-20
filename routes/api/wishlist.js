@@ -42,25 +42,94 @@ router.param('product', function (req, res, next, id) {
  *     ]
  */
 router.get('/', auth, function (req, res, next) {
-    
-    User.populate(req.user, {path: 'wishlist'}, function (err, user) {
+
+    Wishlist.findOne({owner: req.user.id}).populate('entries').lean().exec(function (err, wishlist) {
         if (err) {
             return next(err);
         }
-        res.json(user.wishlist);
+        Wishlist.populate(wishlist, {path: 'entries.product'}, function (err, uwl) {
+            console.log(uwl);
+            if (err) {
+                return next(err);
+            }
+            res.json(uwl);
+        });
+    });
+
+});
+/**
+ * @api {get} /api/wishlist/all Get All Wishlist
+ * @apiName WishlistGetAll
+ * @apiGroup Wishlist
+ * @apiDescription Retourneert alle wishlists 
+ * 
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     [
+ *      {
+ *          [wishlist details]
+ *      },
+ *      ..
+ *     ]
+ */
+router.get('/all', auth, function (req, res, next) {
+
+    Wishlist.find().populate('entries').lean().exec(function (err, wishlist) {
+        if (err) {
+            return next(err);
+        }
+        Wishlist.populate(wishlist, {path: 'entries.product'}, function (err, uwl) {
+            console.log(uwl);
+            if (err) {
+                return next(err);
+            }
+            res.json(uwl);
+        });
     });
 
 });
 
 /**
- * @api {put} /api/wishlist/:product/:amount Product Append
- * @apiName WishlistProductAdd
+ * @api {get} /api/wishlist/all Get All Wishlist
+ * @apiName WishlistGetAll
  * @apiGroup Wishlist
- * @apiDescription Product toevoegen, verwijderen of aantallen aanpassen.
+ * @apiDescription Retourneert alle wishlists 
+ * 
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     [
+ *      {
+ *          [wishlist details]
+ *      },
+ *      ..
+ *     ]
+ */
+router.get('/:id', auth, function (req, res, next) {
+
+    Wishlist.find({id: req.params.id}).populate('entries').lean().exec(function (err, wishlist) {
+        if (err) {
+            return next(err);
+        }
+        Wishlist.populate(wishlist, {path: 'entries.product'}, function (err, uwl) {
+            console.log(uwl);
+            if (err) {
+                return next(err);
+            }
+            res.json(uwl);
+        });
+    });
+
+});
+
+/**
+ * @api {put} /api/wishlist/:product/:amount Product Upsert
+ * @apiName WishlistProductUpsert
+ * @apiGroup Wishlist
+ * @apiDescription Product toevoegen of aantallen aanpassen.
  * 1. Gebruik de product.cid als :product parameter!
  * 2. Als het product zich niet in de lijst bevindt wordt dit aangemaakt.
- * 3. Als het product zich wel in de lijst bevindt wordt product.amount op 
- * :amount gezet.
+ * 3. Als het product zich wel in de lijst bevindt wordt entries[product].amount
+ * naar :amount geupdate.
  * 4. Om te verwijderen, zet :amount op 0. 
  * 
  * @apiSuccessExample Success-Response:
@@ -73,14 +142,18 @@ router.get('/', auth, function (req, res, next) {
  *     ]
  */
 router.put('/:product/:amount', auth, function (req, res, next) {
+
     if (req.user === 'undefined') {
-        return next("Couldn't find user");
+        return next("Couldn't find user " + err);
     }
 
     User.populate(req.user, {path: 'wishlist'}, function (err, user) {
-        user.wishlist.append(req.product, req.params.amount, function (err, k) {
+        if (err) {
+            return next(err);
+        }
+        user.wishlist.upsert(req.product, req.params.amount, function (err, k) {
             if (err) {
-                return next("Could not save");
+                return next("Could not save " + err);
             }
             res.json(k);
         });
