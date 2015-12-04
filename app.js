@@ -11,7 +11,13 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 require('./models/Posts');
 require('./models/Comments');
+require('./models/Users');
 mongoose.connect('mongodb://localhost/carnewalMEAN');
+
+
+// Passport
+var passport = require('passport');
+require('./config/passport');
 
 // Routes
 var post = require('./routes/post');
@@ -35,6 +41,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Passport init
+app.use(passport.initialize());
 
 app.use('/', post);
 app.use('/users', users);
