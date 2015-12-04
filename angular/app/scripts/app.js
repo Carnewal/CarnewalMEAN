@@ -156,9 +156,9 @@ o.upvoteComment = function(post, comment) {
 app.controller('MainCtrl', [
 	'$scope',
 	'postFactory',
-	function($scope, postFactory){
-		$scope.test = 'Hello world!';
-
+	'auth',
+	function($scope, postFactory, auth){
+		$scope.isLoggedIn = auth.isLoggedIn;
 		$scope.posts = postFactory.posts;
 
 		$scope.addPost = function(){
@@ -179,8 +179,10 @@ app.controller('MainCtrl', [
 	'$scope',
 	'postFactory',
 	'post',
-	function($scope, postFactory, post){
-
+	'auth',
+	function($scope, postFactory, post, auth) {
+		
+		$scope.isLoggedIn = auth.isLoggedIn;
 		$scope.post = post;
 
 		$scope.addComment = function(){
