@@ -4,6 +4,9 @@ var mongoose = require('mongoose');
 var Post = mongoose.model('Post');
 var Comment = mongoose.model('Comment');
 
+var jwt = require('express-jwt');
+var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
+
 
 /**
  * Inject the Post :post into the request param
@@ -37,26 +40,7 @@ router.param('comment', function(req, res, next, id) {
     return next();
   });
 });
-/**
- * @api {post} /api/register User Local Registration
- * @apiName PostRegister
- * @apiGroup Index
- *
- * @apiParam {String} email Users Email Address
- * @apiParam {String} password Users Plain-Text Password
- * @apiParam {String} firstname Users First Name
- * @apiParam {String} lastname Users Last Name
- * @apiParam {String} gender Users Gender
- * @apiParam {String} birthday Users Gender
- *
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *       "token": [GENERATED JWT TOKEN]
- *     }
- *
- *
- */
+
 router.get('/posts', function(req, res, next) {
   Post.find(function(err, posts){
     if(err){ return next(err); }
@@ -66,28 +50,11 @@ router.get('/posts', function(req, res, next) {
 });
 
 
-/**
- * @api {post} /posts Create a post
- * @apiName PostRegister
- * @apiGroup Index
- *
- * @apiParam {String} email Users Email Address
- * @apiParam {String} password Users Plain-Text Password
- * @apiParam {String} firstname Users First Name
- * @apiParam {String} lastname Users Last Name
- * @apiParam {String} gender Users Gender
- * @apiParam {String} birthday Users Gender
- *
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *       "token": [GENERATED JWT TOKEN]
- *     }
- *
- *
- */
-router.post('/posts', function(req, res, next) {
+
+router.post('/posts', auth, function(req, res, next) {
   var post = new Post(req.body);
+  post.author = req.payload.username;
+
   post.save(function(err, post){
     if(err){ return next(err); }
     res.json(post);
@@ -103,10 +70,11 @@ router.get('/posts/:post', function(req, res, next) {
 })
 
 
-router.post('/posts/:post/comments', function(req, res, next) {
+router.post('/posts/:post/comments', auth, function(req, res, next) {
   var comment = new Comment(req.body);
   comment.post = req.post;
-
+  comment.author = req.payload.username;
+  
   comment.save(function(err, comment){
     if(err){ return next(err); }
 
@@ -122,7 +90,7 @@ router.post('/posts/:post/comments', function(req, res, next) {
 
 
 
-router.put('/posts/:post/upvote', function(req, res, next) {
+router.put('/posts/:post/upvote', auth, function(req, res, next) {
   req.post.upvote(function(err, post){
     if (err) { return next(err); }
 
@@ -131,7 +99,7 @@ router.put('/posts/:post/upvote', function(req, res, next) {
 });
 
 
-router.put('/posts/:post/comments/:comment/upvote', function(req, res, next) {
+router.put('/posts/:post/comments/:comment/upvote', auth, function(req, res, next) {
 
   req.comment.upvote(function(err, post){
     if (err) { return next(err); }
