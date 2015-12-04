@@ -1,0 +1,41 @@
+[
+    {
+        "cid": "p033BBS",
+        "name": "BBS 18\" Racing Wheels - Aluminum",
+        "category": "Wheels",
+        "car": "All",
+        "img": "http://www.carnewal.com/cpx/p033.jpg",
+        "price": 3720,
+        "description": "Some nice wheels"
+        
+    },
+    {
+        "cid": "p64013",
+        "name": "Bilstein PSS-10 Coil Over Kit",
+        "category": "Suspension",
+        "car": "P64",
+        "img": "http://www.carnewal.com/cpx/p64013.jpg",
+        "price": 1895,
+        "description": "Made by Bilstein"
+    },
+    {
+        "cid": "p97084",
+        "name": "PSE Remote Control",
+        "category": "Electronics",
+        "car": "P97",
+        "img": "http://www.carnewal.com/cpx/p97084.jpg",
+        "vid": "z1V9lW1CW-4",
+        "price": 150,
+        "description": "We now offer a plug and play solution that allows you to control the PSE manually, with memory function and all this via remote control."
+        
+    },
+    {
+        "cid": "p93130",
+        "name": "Alu Gauge Trim Rings",
+        "category": "Interior",
+        "car": "P93",
+        "img": "http://www.carnewal.com/cpx/p93130_inst.jpg",
+        "price": 75,
+        "description": "Rings that are installed on the inner edge of the 5 instruments. Made from alu."
+    }
+]

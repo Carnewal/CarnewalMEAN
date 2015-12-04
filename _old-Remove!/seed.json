@@ -1,0 +1,5 @@
+{
+	"undefined": "localhost/carnewal",
+	"dev": "localhost/carnewal",
+	"prod": "localhost/carnewal"
+}

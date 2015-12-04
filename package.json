@@ -1,24 +1,21 @@
 {
-  "name": "Carnewal",
-  "version": "0.0.2",
+  "name": "CarnewalMEAN",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
-    "apidoc": "^0.13.1",
     "body-parser": "~1.13.2",
     "cookie-parser": "~1.3.5",
     "debug": "~2.2.0",
     "express": "~4.13.1",
     "express-jwt": "^3.3.0",
-    "express-session": "^1.12.1",
-    "geoip-lite": "^1.1.6",
     "jade": "~1.11.0",
     "jsonwebtoken": "^5.4.1",
-    "mongoose": "^4.2.6",
-    "mongoose-autopopulate": "^0.4.0",
+    "mongoose": "^4.2.9",
     "morgan": "~1.6.1",
+    "nodemon": "^1.8.1",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "serve-favicon": "~2.3.0"
