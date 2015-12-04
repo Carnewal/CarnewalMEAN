@@ -43,6 +43,8 @@ router.param('comment', function(req, res, next, id) {
 
 router.get('/posts', function(req, res, next) {
   Post.find(function(err, posts){
+
+  console.log(posts);
     if(err){ return next(err); }
 
     res.json(posts);
@@ -54,6 +56,8 @@ router.get('/posts', function(req, res, next) {
 router.post('/posts', auth, function(req, res, next) {
   var post = new Post(req.body);
   post.author = req.payload.username;
+
+  console.log(post);
 
   post.save(function(err, post){
     if(err){ return next(err); }
