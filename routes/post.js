@@ -21,6 +21,7 @@ router.param('post', function(req, res, next, id) {
   });
 });
 
+
 /**
  * Inject the Comment :comment into the request param
  *
@@ -128,6 +129,18 @@ router.put('/posts/:post/upvote', function(req, res, next) {
     res.json(post);
   });
 });
+
+
+router.put('/posts/:post/comments/:comment/upvote', function(req, res, next) {
+
+  req.comment.upvote(function(err, post){
+    if (err) { return next(err); }
+
+    res.json(post);
+  });
+
+});
+
 
 
 /*router.get('/', function(req, res, next) {
