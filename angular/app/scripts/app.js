@@ -2,7 +2,7 @@
 
 var host = 'http://localhost:3000';
 
-var app = angular.module('flapperNews', ['ui.router',]);
+var app = angular.module('flapperNews', ['ui.router']);
 
 app.config([
 	'$stateProvider',
@@ -24,7 +24,13 @@ app.config([
 		.state('posts', {
 			url: '/posts/{id}',
 			templateUrl: '/posts.html',
-			controller: 'PostsCtrl'
+			controller: 'PostsCtrl',
+			  resolve: {
+			    post: ['$stateParams', 'postFactory', function($stateParams, postFactory) {
+			      return postFactory.get($stateParams.id);
+			    }]
+			  }
+
 		});
 
 		$urlRouterProvider.otherwise('home');

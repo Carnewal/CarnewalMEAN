@@ -131,7 +131,7 @@
                 </span>
                 <br/>
                 <span>
-                <a href="#/posts/{{post._id}}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a>
+                  <a href="#/posts/{{post._id}}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a>
                 </span>
               </div>
             </div>
@@ -164,27 +164,27 @@
     </script>
 
 
-  <script type="text/ng-template" id="/posts.html">
-    <div class="page-header">
-      <h3>
-        <a ng-show="post.link" href="{{post.link}}">
-          {{post.title}}
-        </a>
-        <span ng-hide="post.link">
-          {{post.title}}
-        </span>
-      </h3>
-    </div>
+    <script type="text/ng-template" id="/posts.html">
+      <div class="page-header">
+        <h3>
+          <a ng-show="post.link" href="{{post.link}}">
+            {{post.title}}
+          </a>
+          <span ng-hide="post.link">
+            {{post.title}}
+          </span>
+        </h3>
+      </div>
 
-    <div ng-repeat="comment in post.comments | orderBy:'-upvotes'">
-      <span class="glyphicon glyphicon-thumbs-up"
+      <div ng-repeat="comment in post.comments | orderBy:'-upvotes'">
+        <span class="glyphicon glyphicon-thumbs-up"
         ng-click="incrementUpvotes(comment)"></span>
-      {{comment.upvotes}} - by {{comment.author}}
-      <span style="font-size:20px; margin-left:10px;">
-        {{comment.body}}
-      </span>
-    </div>
-    <form ng-submit="addComment()"
+        {{comment.upvotes}} - by {{comment.author}}
+        <span style="font-size:20px; margin-left:10px;">
+          {{comment.body}}
+        </span>
+      </div>
+      <form ng-submit="addComment()"
       style="margin-top:30px;">
       <h3>Add a new comment</h3>
 
@@ -200,5 +200,5 @@
   </script>
 
 
-  </body>
-  </html>
+</body>
+</html>
