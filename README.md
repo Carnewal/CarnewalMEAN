@@ -5,7 +5,7 @@ Install as usual, "npm install" in the root directory and "grunt" in the /angula
 # Running
 
 * For nodejs, use "npm start" in the root directory. Server will start on port 3000
-* For angular, use "grunt serve". Server will start on port 9000
+* For angular, cd to angular/ and use "grunt serve". Server will start on port 9000
 
 
 # Testing
