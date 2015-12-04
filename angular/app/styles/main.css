@@ -1,8 +1,4 @@
-.createcommentrow {
-  padding:6px;
-  margin-top:10px;
-  margin-bottom:10px;
-}
+
 
 
 .postrow { 
@@ -12,8 +8,11 @@
   border: 1px solid #e7e7e7;
   border-radius:7px;
 }
-.top7 { margin-top:7%; }
 
+.createcommentrow {
+  margin-top:10px;
+  margin-bottom:20px;
+}
 
 .browsehappy {
   margin: 0.2em 0;
