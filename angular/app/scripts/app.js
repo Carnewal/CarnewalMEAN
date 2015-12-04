@@ -15,13 +15,12 @@ app.config([
 			templateUrl: '/home.html',
 			controller: 'MainCtrl',
 			resolve: {
-				postPromise: ['posts', function(posts){
-					return posts.getAll();
+				postPromise: ['postFactory', function(postFactory){
+					return postFactory.getAll();
 				}]
 			}
 
 		})
-
 		.state('posts', {
 			url: '/posts/{id}',
 			templateUrl: '/posts.html',
@@ -31,7 +30,7 @@ app.config([
 		$urlRouterProvider.otherwise('home');
 	}]);
 
-app.factory('posts', ['$http', function($http){
+app.factory('postFactory', ['$http', function($http){
 	var o = {
 		posts: []
 	};
@@ -77,15 +76,15 @@ app.factory('posts', ['$http', function($http){
 
 app.controller('MainCtrl', [
 	'$scope',
-	'posts',
-	function($scope, posts){
+	'postFactory',
+	function($scope, postFactory){
 		$scope.test = 'Hello world!';
 
-		$scope.posts = posts.posts;
+		$scope.posts = postFactory.posts;
 
 		$scope.addPost = function(){
 			if($scope.title === '') { return; }
-			posts.create({
+			postFactory.create({
 				title: $scope.title,
 				link: $scope.link,
 			});
@@ -94,21 +93,22 @@ app.controller('MainCtrl', [
 		};
 
 		$scope.incrementUpvotes = function(post) {
-			posts.upvote(post);
+			postFactory.upvote(post);
 		};
 
 	}]);
 
 app.controller('PostsCtrl', [
 	'$scope',
-	'posts',
+	'postFactory',
 	'post',
-	function($scope, posts, post){
+	function($scope, postFactory, post){
+
 		$scope.post = post;
 
 		$scope.addComment = function(){
 			if($scope.body === '') { return; }
-			posts.addComment(post._id, {
+			postFactory.addComment(post._id, {
 				body: $scope.body,
 				author: 'user',
 			}).success(function(comment) {
@@ -118,7 +118,7 @@ app.controller('PostsCtrl', [
 		};
 
 		$scope.incrementUpvotes = function(comment){
-			posts.upvoteComment(post, comment);
+			postFactory.upvoteComment(post, comment);
 		};
 	}]);
 
