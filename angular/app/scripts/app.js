@@ -4,6 +4,37 @@ var host = 'http://localhost:3000';
 
 var app = angular.module('flapperNews', ['ui.router']);
 
+
+
+/*
+app.directive('typeaheadItem', function() {
+return {
+        require: '^typeahead',
+        link: function(scope, element, attrs, controller) {
+
+            var item = scope.$eval(attrs.typeaheadItem);
+
+            scope.$watch(function() { return controller.isActive(item); }, function(active) {
+                if (active) {
+                    element.addClass('active');
+                } else {
+                    element.removeClass('active');
+                }
+            });
+
+            element.bind('mouseenter', function(e) {
+                scope.$apply(function() { controller.activate(item); });
+            });
+
+            element.bind('click', function(e) {
+                scope.$apply(function() { controller.select(item); });
+            });
+        }
+    };
+});
+*/
+
+
 app.config([
 	'$stateProvider',
 	'$urlRouterProvider',
@@ -88,7 +119,13 @@ o.upvote = function(post) {
     post.upvotes += 1;
   });
 };
-
+o.downvote = function(post) {
+  return $http.put(host + '/posts/' + post._id + '/downvote', null, {
+    headers: {Authorization: 'Bearer '+auth.getToken()}
+  }).success(function(data){
+    post.upvotes -= 1;
+  });
+};
 o.addComment = function(id, comment) {
   return $http.post(host + '/posts/' + id + '/comments', comment, {
     headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -99,7 +136,14 @@ o.upvoteComment = function(post, comment) {
   return $http.put(host + '/posts/' + post._id + '/comments/'+ comment._id + '/upvote', null, {
     headers: {Authorization: 'Bearer '+auth.getToken()}
   }).success(function(data){
-    comment.upvotes += 1;
+    comment.upvotes -= 1;
+  });
+};
+o.downvoteComment = function(post, comment) {
+  return $http.put(host + '/posts/' + post._id + '/comments/'+ comment._id + '/downvote', null, {
+    headers: {Authorization: 'Bearer '+auth.getToken()}
+  }).success(function(data){
+    comment.upvotes -= 1;
   });
 };
 
@@ -166,13 +210,16 @@ app.controller('MainCtrl', [
 			postFactory.create({
 				title: $scope.title,
 				link: $scope.link,
-			});
+ 			});
 			$scope.title = '';
 			$scope.link = '';
 		};
 
 		$scope.upvote = function(post) {
 			postFactory.upvote(post);
+		};
+		$scope.downvote = function(post) {
+			postFactory.downvote(post);
 		};
 
 	}]).controller('PostsCtrl', [
@@ -198,6 +245,10 @@ app.controller('MainCtrl', [
 
 		$scope.upvote = function(comment){
 			postFactory.upvoteComment(post, comment);
+		};
+
+		$scope.downvote = function(comment){
+			postFactory.downvoteComment(post, comment);
 		};
 	}]).controller('AuthCtrl', [
 	'$scope',

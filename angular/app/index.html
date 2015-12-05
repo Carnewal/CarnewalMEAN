@@ -49,15 +49,10 @@
                 <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
                 <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
                 <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
-                <li>{{ currentUser() }}</li>
+                <li ng-show="isLoggedIn()"  > <div class="user">Hi, {{ currentUser() }}</div></li>
 
               </ul>
-              <form class="navbar-form navbar-right" role="search">
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">k</button>
-              </form>
+              
             </div>
 
           </div>
@@ -97,6 +92,7 @@
 
       <script type="text/ng-template" id="/home.html">
 
+
         <div class="row createcommentrow">
           <div class="container">
             <div ng-hide="isLoggedIn()">
@@ -116,53 +112,50 @@
           </div>
         </div>
 
-        <div ng-repeat="post in posts | orderBy:'-upvotes'">
 
+
+        <div class="row createcommentrow">              
+
+          <div class="form-group">
+                  <label for="title">Filter posts</label>
+                  <input type="type" ng-model="filter" class="form-control" id="filter" placeholder="Post title filter">
+          </div> 
+        </div>
+
+
+
+
+        <div ng-repeat="post in posts | orderBy:'-upvotes'">
          <div class="row postrow">
           <div class="col-xs-10">
-
             <div class="row">
-              
-
               <div class="col-xs-12 col-md-12">
-                <a ng-show="post.link" href="{{post.link}}">
-                  {{post.title}}
-                </a>
-                <span ng-hide="post.link">
-                  {{post.title}}
-                </span>
-                <br/>
-                
-                <span ng-show="post.author">
-                  posted by <a>{{post.author}}</a> |
-                </span>
-                <span>
-                  <a href="#/posts/{{post._id}}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a>
-                </span>
+                <a ng-show="post.link" href="{{post.link}}">{{post.title}}</a>
+                <span ng-hide="post.link">{{post.title}}</span><br/>                
+                <span ng-show="post.author">posted by <a>{{post.author}}</a>|</span>
+                <span><a href="#/posts/{{post._id}}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a></span>
               </div>
             </div>
           </div>
-
-          <div class="col-xs-1">
-            {{post.upvotes}}
-          </div>
-
+          <div class="col-xs-1">{{post.upvotes}}</div>
           <div class="col-xs-1">
             <div class="btn-group-vertical">
-
               <button class="btn btn-success" type="button" ng-click="upvote(post)">
                 <span class="dropup">
                   <span class="caret"></span>
                 </span>
               </button>
               <button class="btn btn-warning" type="button" ng-click="downvote(post)">
-                <span class="caret"></span>
+                <span class="caret"></span> 
               </button>
-
             </div>
-
           </div>     
-        </div>
+        </div> 
+
+
+
+
+
       </div>
 
 
@@ -187,6 +180,10 @@
       <div ng-repeat="comment in post.comments | orderBy:'-upvotes'">
         <span class="glyphicon glyphicon-thumbs-up"
         ng-click="upvote(comment)"></span>
+
+        <span class="glyphicon glyphicon-thumbs-down"
+        ng-click="downvote(comment)"></span>
+
         {{comment.upvotes}} - by {{comment.author}}
         <span style="font-size:20px; margin-left:10px;">
           {{comment.body}}
