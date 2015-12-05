@@ -4,6 +4,17 @@ var host = 'http://localhost:3000';
 
 var app = angular.module('flapperNews', ['ui.router']);
 
+app.directive('flapperpost', function() {
+
+	return {
+		retrict: 'E',
+		scope: {
+			post: '='
+		},
+		templateUrl: 'views/postTemplate.html'
+	};
+
+});
 
 
 /*
@@ -116,6 +127,7 @@ o.upvote = function(post) {
   return $http.put(host + '/posts/' + post._id + '/upvote', null, {
     headers: {Authorization: 'Bearer '+auth.getToken()}
   }).success(function(data){
+  	data = data;
     post.upvotes += 1;
   });
 };
@@ -123,6 +135,7 @@ o.downvote = function(post) {
   return $http.put(host + '/posts/' + post._id + '/downvote', null, {
     headers: {Authorization: 'Bearer '+auth.getToken()}
   }).success(function(data){
+  	data = data;
     post.upvotes -= 1;
   });
 };
@@ -136,6 +149,7 @@ o.upvoteComment = function(post, comment) {
   return $http.put(host + '/posts/' + post._id + '/comments/'+ comment._id + '/upvote', null, {
     headers: {Authorization: 'Bearer '+auth.getToken()}
   }).success(function(data){
+  	data = data;
     comment.upvotes -= 1;
   });
 };
@@ -143,6 +157,7 @@ o.downvoteComment = function(post, comment) {
   return $http.put(host + '/posts/' + post._id + '/comments/'+ comment._id + '/downvote', null, {
     headers: {Authorization: 'Bearer '+auth.getToken()}
   }).success(function(data){
+  	data = data;
     comment.upvotes -= 1;
   });
 };
@@ -195,7 +210,7 @@ o.downvoteComment = function(post, comment) {
 	};
 
 	return auth;
-}])
+}]);
 
 app.controller('MainCtrl', [
 	'$scope',

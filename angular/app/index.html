@@ -121,35 +121,10 @@
                   <input type="type" ng-model="filter" class="form-control" id="filter" placeholder="Post title filter">
           </div> 
         </div>
-
-
-
+  
 
         <div ng-repeat="post in posts | orderBy:'-upvotes'">
-         <div class="row postrow">
-          <div class="col-xs-10">
-            <div class="row">
-              <div class="col-xs-12 col-md-12">
-                <a ng-show="post.link" href="{{post.link}}">{{post.title}}</a>
-                <span ng-hide="post.link">{{post.title}}</span><br/>                
-                <span ng-show="post.author">posted by <a>{{post.author}}</a>|</span>
-                <span><a href="#/posts/{{post._id}}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a></span>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-1">{{post.upvotes}}</div>
-          <div class="col-xs-1">
-            <div class="btn-group-vertical">
-              <button class="btn btn-success" type="button" ng-click="upvote(post)">
-                <span class="dropup">
-                  <span class="caret"></span>
-                </span>
-              </button>
-              <button class="btn btn-warning" type="button" ng-click="downvote(post)">
-                <span class="caret"></span> 
-              </button>
-            </div>
-          </div>     
+          <flapperpost post="post"></flapperpost>  
         </div> 
 
 
